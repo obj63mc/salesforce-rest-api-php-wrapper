@@ -337,15 +337,11 @@ class SalesforceAPI
      *
      * @throws SalesforceAPIException
      */
-    public function searchSOQL($query, $options = false, $all = false, $explain = false)
+    public function searchSOQL($query, $all = false, $explain = false)
     {
         $search_data = [
             'q' => $query,
         ];
-
-		if($options){
-			$search_data = array_merge($search_data, $options);
-		}
 
         // If the explain flag is set, it will return feedback on the query performance
         if ($explain) {
@@ -361,6 +357,19 @@ class SalesforceAPI
         }
 
         return $this->request($path, $search_data, self::METHOD_GET);
+    }
+
+	public function parameterizedSearchSOQL($query, $opts = false)
+    {
+        $search_data = [
+            'q' => $query,
+        ];
+
+		if($opts){
+			$search_data = array_merge($search_data, $opts);
+		}
+
+        return $this->request('parameterizedSearch', $search_data, self::METHOD_GET);
     }
 
     /**
